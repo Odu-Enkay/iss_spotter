@@ -1,14 +1,5 @@
-
 const needle = require('needle');
 
-/**
- * Makes a single API request to retrieve the user's IP address.
- * Input:
- *   - A callback (to pass back an error or the IP string)
- * Returns (via Callback):
- *   - An error, if any (nullable)
- *   - The IP address as a string (null if error). Example: "162.245.144.188"
- */
 const fetchMyIP = function(callback) {
   needle.get('https://api.ipify.org?format=json', (error, response, body) => {
     if (error) return callback(error, null);
@@ -23,6 +14,7 @@ const fetchMyIP = function(callback) {
   });
 };
 
+
 const fetchCoordsByIP = function(ip, callback) {
   needle.get(`http://ipwho.is/${ip}`, (error, response, body) => {
 
@@ -35,14 +27,13 @@ const fetchCoordsByIP = function(ip, callback) {
       const message = `Success status was ${body.success}. Server message says: ${body.message} when fetching for IP ${body.ip}`;
       callback(Error(message), null);
       return;
-    }
-const latitude = body.latitude
-const longitude = body.longitude
-callback(null, {latitude, longitude});
-});
+    } 
+
+    callback(null, {latitude: body.latitude, longitude: body.longitude});
+  });
 };
 
-const fetchISSFlyOverTimes = function(coords, callback) {
+fetchISSFlyOverTimes = function(coords, callback) {
   const url = `https://iss-flyover.herokuapp.com/json/?lat=${coords.latitude}&lon=${coords.longitude}`;
 
   needle.get(url, (error, response, body) => {
@@ -61,8 +52,4 @@ const fetchISSFlyOverTimes = function(coords, callback) {
   });
 };
 
-// Don't need to export the other functions since we are not testing them right now.
-//module.exports = { };
-//module.exports = fetchMyIP;
-//module.exports = fetchCoordsByIP;
 module.exports = { fetchCoordsByIP, fetchMyIP, fetchISSFlyOverTimes  };
