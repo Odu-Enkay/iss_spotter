@@ -42,4 +42,6 @@ callback(null, {latitude, longitude});
 });
 };
 
-module.exports = { fetchMyIP };
+//module.exports = fetchMyIP;
+//module.exports = fetchCoordsByIP;
+module.exports = { fetchCoordsByIP, fetchMyIP };
